@@ -1,85 +1,45 @@
 <template>
-  <div>
-    <v-row justfy="center" align="center">
+  <div class="mt-10">
+    <v-row justfy="center">
       <v-col cols="4">
-        <v-card class="mx-auto" max-width="344" outlined>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="overline mb-4">ยอดหนี้ทั้งหมด</div>
-              <v-list-item-title class="headline mb-1">{{allLoan.totalDdebt}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-card class="mx-auto" max-width="344" height="150">
+          <v-card-title class="justify-center font-weight-bold headline">ยอดหนี้ทั้งหมด</v-card-title>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalDdebt}}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card class="mx-auto" max-width="344" outlined>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="overline mb-4">ยอดคืนทั้งหมด</div>
-              <v-list-item-title class="headline mb-1">{{allLoan.totalPaidAmount}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-card class="mx-auto" max-width="344" height="150">
+          <v-card-title class="justify-center font-weight-bold headline">ยอดคืนทั้งหมด</v-card-title>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalPaidAmount}}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card class="mx-auto" max-width="344" outlined>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="overline mb-4">ยอดหนี้คงเหลือ</div>
-              <v-list-item-title class="headline mb-1">{{allLoan.totalRemainingAmount}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-card class="mx-auto" max-width="344" height="150">
+          <v-card-title class="justify-center font-weight-bold headline">ยอดหนี้คงเหลือ</v-card-title>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalRemainingAmount}}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <div>
-      <v-row :align="alignment" justify="center" class="grey lighten-5" style="height: 300px;">
-        <v-col>
-          <v-text-field label="ค้นหารายชื่อ" single-line outlined></v-text-field>
-        </v-col>
-        <v-col justify="start">
-          <v-btn x-large color="succe ss">ค้นหา</v-btn>
-        </v-col>
-      </v-row>
-      <!-- <v-layout text-center wrap>
-        <v-flex mb-4>
-          <v-row align="center" justify="center">
-            <v-col cols="2"></v-col>
-            <v-col>
-              <v-text-field label="ค้นหารายชื่อ" single-line outlined></v-text-field>
-            </v-col>
-            <v-col>
-              <v-btn x-large color="success">ค้นหา</v-btn>
-            </v-col>
-            <v-col cols="2"></v-col>
-          </v-row>
-        </v-flex>
-      </v-layout>-->
+    <div class="d-flex justify-center mt-10">
+      <div class="search mt-10">
+        <v-text-field label="ค้นหารายชื่อ" outlined></v-text-field>
+      </div>
+      <div class="ma-10">
+        <v-btn class="text-justify" x-large color="success">ค้นหา</v-btn>
+      </div>
     </div>
-
-    <div>
-      <!-- <table class="table table-bordered" style="width:100%">
-        <tr>
-          <td>ชื่ิอ นามสกุล</td>
-
-          <td>ยอดหนี้</td>
-          <td>ยอดคืน</td>
-          <td>ยอดหนี้คงเหลือ</td>
-          <td>เช็คยอดผ่อน</td>
-        </tr>
-        <tr v-for="lists in userList" :key="lists.firstName">
-          <td>{{lists.firstName}} {{lists.lastName}}</td>
-
-          <td>{{lists.totalLone}}</td>
-          <td>{{lists.paidAmount}}</td>
-          <td>{{lists.remainingAmount}}</td>
-          <td>
-            <v-btn color="primary" small>Click</v-btn>
-          </td>
-        </tr>
-      </table>-->
-      <v-data-table :headers="headers" :items="userList" class="elevation-1">
-        <template :color="red" v-slot:item.firstName="{ item }">{{item.firstName}} {{item.lastName}}</template>
+    <div class="table-width mt-10">
+      <v-data-table
+        disable-sort
+        :headers="headers"
+        :items="userList"
+        class="elevation-3"
+        hide-default-footer
+      >
+        <template :color="red" v-slot:item.name="{ item }">{{item.firstName}} {{item.lastName}}</template>
+        <template :color="red" v-slot:item.buttun="{  }">
+          <v-chip color="green" dark>รายละเอียด</v-chip>
+        </template>
       </v-data-table>
     </div>
   </div>
@@ -87,7 +47,7 @@
 
 
 <script>
-import userService from "../service/userservice";
+import userService from "../services/user-service";
 export default {
   name: 'DashBoard',
   props: {
@@ -96,12 +56,11 @@ export default {
   data() {
     return {
       headers: [
-
-        { text: 'ชื่ิอ-นามสกุล', value: 'firstName' },
-        { text: 'ยอดหนี้', value: 'totalLone' },
-        { text: 'ยอดคืน', value: 'paidAmount' },
-        { text: 'ยอดหนี้คงเหลือ', value: 'remainingAmount' },
-        { text: 'เช็คยอดผ่อน' },
+        { text: 'ชื่ิอ-นามสกุล', value: 'name', class: "title font-weight-bold" },
+        { text: 'ยอดหนี้', value: 'totalLone', class: "title font-weight-bold" },
+        { text: 'ยอดคืน', value: 'paidAmount', class: "title font-weight-bold" },
+        { text: 'ยอดหนี้คงเหลือ', value: 'remainingAmount', class: "title font-weight-bold" },
+        { text: '', value: 'buttun', class: "title font-weight-bold" },
       ],
       muckup: {
         list: {
@@ -132,5 +91,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped >
+.search {
+  width: 500px;
+}
+.table-width {
+  display: inline-table;
+  width: 85%;
+}
+
+.table100 th {
+  font-family: Montserrat-Medium;
+  font-size: 36px;
+  color: #fff;
+  line-height: 1.4;
+  text-transform: uppercase;
+
+  background-color: #36304a;
+}
 </style>
