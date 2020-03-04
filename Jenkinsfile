@@ -1,10 +1,8 @@
 pipeline {
     agent any
     environment {
-        imgServer="portus.odds.team/odds-installment/server:pipe-${BUILD_NUMBER}"
         imgClient="portus.odds.team/odds-installment/client:pipe-${BUILD_NUMBER}"
         registry="https://portus.odds.team"
-        appServer="odds-installment-server"
         appClient="odds-installment-client"
         type="service"
         env="prod"
@@ -15,20 +13,6 @@ pipeline {
         ansiColor('xterm')
     }
     stages{
-        stage('Build Imager Server And Push') {
-            steps {
-                    dir ('server') {
-                        sh "docker build -t ${imgServer} ."
-                    }
-            } 
-        }
-        stage('Push Image Server') {
-            steps {
-                withDockerRegistry(credentialsId: 'portus-jenkins', url: registry) {
-                    sh "docker push ${imgServer}"
-                }
-            }
-        }
         stage('Build Imager Client And Push') {
             steps {
                     dir ('client') {
