@@ -1,48 +1,11 @@
-//import axios from "axios";
+import axios from "../plugins/axios";
 function getTotalLoan(){
-    let loan ={ 
-        totalDdebt:120000 ,
-        totalPaidAmount:3000,
-        totalRemainingAmount:120000
-    }
-    return loan ;
+   return axios.get("/finacials");
 }
 
 function getUserList(){
-    let list = [
-      {
-        firstName: "somename",
-        lastName: "somelast",
-        nickName: "somenick",
-        email: "test@gmail.com",
-        phone: "0942257558",
-        totalLone: 100000,
-        paidAmount: 20000,
-        remainingAmount: 80000
-      },
-      {
-        firstName: "somename2",
-        lastName: "somelast",
-        nickName: "somenick",
-        email: "test@gmail.com",
-        phone: "0942257558",
-        totalLone: 100000,
-        paidAmount: 20000,
-        remainingAmount: 80000
-      },
-      {
-        firstName:"somename3",
-        lastName:"somelast",
-        nickName:"somenick",
-        email:"test@gmail.com",
-        phone:"0942257558",
-        totalLone:100000,
-        paidAmount:20000,
-        remainingAmount:80000
-        },
-    ];
 
-    return list;
+    return axios.get("/users");
 }
 
 

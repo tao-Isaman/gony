@@ -4,7 +4,7 @@
       <v-col cols="4">
         <v-card class="mx-auto" max-width="344" height="150">
           <v-card-title class="justify-center font-weight-bold headline">ยอดหนี้ทั้งหมด</v-card-title>
-          <v-card-text class="headline font-weight-medium">{{allLoan.totalDdebt}}</v-card-text>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalDebt}}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
@@ -57,7 +57,7 @@ export default {
     return {
       headers: [
         { text: 'ชื่ิอ-นามสกุล', value: 'name', class: "title font-weight-bold" },
-        { text: 'ยอดหนี้', value: 'totalLone', class: "title font-weight-bold" },
+        { text: 'ยอดหนี้', value: 'totalLoan', class: "title font-weight-bold" },
         { text: 'ยอดคืน', value: 'paidAmount', class: "title font-weight-bold" },
         { text: 'ยอดหนี้คงเหลือ', value: 'remainingAmount', class: "title font-weight-bold" },
         { text: '', value: 'buttun', class: "title font-weight-bold" },
@@ -74,16 +74,30 @@ export default {
 
       },
 
-      allLoan: {},
+      allLoan: {
+        "totalDebt": 0, "totalPaidAmount": 0, "totalRemainingAmount": 0
+      },
       userList: []
     }
 
   },
   mounted() {
-    this.allLoan = userService.getTotalLoan()
-    console.log(this.allLoan)
-    this.userList = userService.getUserList()
-
+    this.getFinancials()
+    this.getUserList()
+  }, 
+  methods: {
+    getUserList() {
+      userService.getUserList().then(
+        response => {
+          this.userList = response.data
+        }
+      )
+    },
+    getFinancials() {
+      userService.getTotalLoan().then(res => {
+        this.allLoan = res.data[0]
+      })
+    }
   }
 
 
