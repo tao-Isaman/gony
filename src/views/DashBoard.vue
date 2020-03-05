@@ -22,10 +22,10 @@
     </v-row>
     <div class="d-flex justify-center mt-10">
       <div class="search mt-10">
-        <v-text-field label="ค้นหารายชื่อ" outlined></v-text-field>
+        <v-text-field v-model="serach" label="ค้นหารายชื่อ" outlined></v-text-field>
       </div>
       <div class="ma-10">
-        <v-btn class="text-justify" x-large color="success">ค้นหา</v-btn>
+        <v-btn @click="serachUser(serach)"  class="text-justify" x-large color="success">ค้นหา</v-btn>
       </div>
     </div>
     <div class="table-width mt-10">
@@ -55,6 +55,7 @@ export default {
   },
   data() {
     return {
+      serach: "",
       headers: [
         { text: 'ชื่ิอ-นามสกุล', value: 'name', class: "title font-weight-bold" },
         { text: 'ยอดหนี้', value: 'totalLoan', class: "title font-weight-bold" },
@@ -81,10 +82,18 @@ export default {
     }
 
   },
+  watch: {
+    serach: function (value) {
+     if (value.length == 0) {
+        this.getUserList()
+      }
+
+    }
+  },
   mounted() {
     this.getFinancials()
     this.getUserList()
-  }, 
+  },
   methods: {
     getUserList() {
       userService.getUserList().then(
@@ -97,11 +106,17 @@ export default {
       userService.getTotalLoan().then(res => {
         this.allLoan = res.data[0]
       })
+    },
+    serachUser(name) {
+      console.log(name);
+      
+      if (name.length >= 3) {
+        userService.getUserByName(name).then(res => {
+          this.userList = res.data
+        })
+      }
     }
   }
-
-
-
 }
 </script>
 

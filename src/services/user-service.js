@@ -8,8 +8,13 @@ function getUserList(){
     return axios.get("/users");
 }
 
-
-export default{
-    getTotalLoan,
-    getUserList
+function getUserByName(name){
+  return axios.get(`users/${name}`)
 }
+
+
+export default {
+  getTotalLoan,
+  getUserList,
+  getUserByName
+};
