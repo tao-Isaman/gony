@@ -4,19 +4,19 @@
       <v-col cols="4">
         <v-card class="mx-auto" max-width="344" height="150">
           <v-card-title class="justify-center font-weight-bold headline">ยอดหนี้ทั้งหมด</v-card-title>
-          <v-card-text class="headline font-weight-medium">{{allLoan.totalDebt}}</v-card-text>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalDebt | toFixedTwoDigit}}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
         <v-card class="mx-auto" max-width="344" height="150">
           <v-card-title class="justify-center font-weight-bold headline">ยอดคืนทั้งหมด</v-card-title>
-          <v-card-text class="headline font-weight-medium">{{allLoan.totalPaidAmount}}</v-card-text>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalPaidAmount | toFixedTwoDigit}}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
         <v-card class="mx-auto" max-width="344" height="150">
           <v-card-title class="justify-center font-weight-bold headline">ยอดหนี้คงเหลือ</v-card-title>
-          <v-card-text class="headline font-weight-medium">{{allLoan.totalRemainingAmount}}</v-card-text>
+          <v-card-text class="headline font-weight-medium">{{allLoan.totalRemainingAmount | toFixedTwoDigit}}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -36,10 +36,14 @@
         class="elevation-3"
         hide-default-footer
       >
-        <template :color="red" v-slot:item.name="{ item }">{{item.firstName}} {{item.lastName}}</template>
-        <template :color="red" v-slot:item.buttun="{  }">
+        <template  v-slot:item.name="{ item }">{{item.firstName}} {{item.lastName}}</template>
+        <template  v-slot:item.buttun="{  }">
           <v-chip color="green" dark>รายละเอียด</v-chip>
         </template>
+        <template v-slot:item.totalLoan="{item}">{{item.totalLoan | toFixedTwoDigit}}  </template>
+        <template v-slot:item.paidAmount="{item}">{{item.paidAmount | toFixedTwoDigit}}  </template>
+        <template v-slot:item.remainingAmount="{item}">{{item.remainingAmount | toFixedTwoDigit}}  </template>
+        
       </v-data-table>
     </div>
   </div>
@@ -105,6 +109,7 @@ export default {
     getFinancials() {
       userService.getTotalLoan().then(res => {
         this.allLoan = res.data[0]
+      
       })
     },
     serachUser(name) {
